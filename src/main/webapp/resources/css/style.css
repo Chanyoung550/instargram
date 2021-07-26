@@ -1,0 +1,215 @@
+@charset "EUC-KR";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  width: 100%;
+  min-height: 100%;
+}
+main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: rgba(var(--b3f, 250, 250, 250), 1);
+}
+
+button {
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+  color: #000;
+}
+.login {
+  width: 100%;
+  max-width: 935px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__img {
+  position: relative;
+  width: 454px;
+  height: 618px;
+  background: url("../images/iphone.png");
+  background-size: 100% 100%;
+  padding-top: 99px;
+}
+.login__img img {
+  width: 240px;
+  height: 427px;
+  position: absolute;
+  right: 64px;
+}
+.login__form__container {
+  width: 350px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.login__form,
+.login__register {
+  padding: 10px 0 20px;
+  text-align: center;
+  border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+  background-color: #fff;
+}
+.login__form h1 {
+  height: 86px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login__form h1 + p {
+  color: #777;
+}
+.login__form h1 img {
+  width: 175px;
+}
+.login__input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+  padding: 0 40px;
+}
+.login__input input {
+  width: 100%;
+  height: 38px;
+  padding: 9px 0 7px 8px;
+  border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+  border-radius: 3px;
+  margin-bottom: 6px;
+}
+.login__input button {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  height: 30px;
+  background-color: #0095f6;
+  color: #fff;
+  margin-top: 15px;
+  font-weight: 700;
+  border-radius: 3px;
+  transition: background 0.5s;
+}
+.login__input button:hover {
+  background: #0f75b9;
+}
+.login__form .cta.blue {
+  width: 70%;
+  margin-top: 10px;
+}
+.login__form .cta.blue i {
+  margin-right: 5px;
+}
+.login__facebook .sign-detail {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.login__horizon {
+  display: flex;
+  margin-top: 20px;
+  padding: 0 40px;
+  align-items: center;
+}
+.login__horizon .br {
+  width: 40%;
+  height: 1px;
+  border-top: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
+}
+
+.login__horizon .or {
+  width: 20%;
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+.login__facebook {
+  padding: 0 40px;
+  margin-top: 15px;
+}
+.login__facebook button {
+  background-color: #fff;
+  width: 100%;
+  height: 30px;
+  border: 0;
+  font-weight: 600;
+  font-size: 15px;
+}
+.login__facebook button i,
+span {
+  color: #385185;
+}
+
+.loin__forgetpassword {
+  display: inline-block;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.login__register {
+  margin-top: 10px;
+  line-height: 60px;
+  padding: 0;
+}
+.login__register span {
+  font-size: 14px;
+  font-weight: 200;
+}
+
+.login__register a {
+  color: #0095f6;
+}
+
+.login__download {
+  text-align: center;
+  margin-top: 10px;
+}
+.login__download p {
+  padding: 15px 0;
+  font-size: 15px;
+}
+.download__btn {
+  display: flex;
+  justify-content: center;
+}
+.download__btn button {
+  height: 40px;
+  width: 40%;
+  border: 0;
+  outline: 0;
+}
+.download__btn button img {
+  width: 100%;
+  height: 100%;
+}
+.download__btn button:first-child {
+  margin-right: 10px;
+}
+
+.cta {
+  margin-right: 10px;
+  padding: 5px 9px;
+  border: 1px solid rgba(var(--ca6, 219, 219, 219), 1);
+  border-radius: 4px;
+  color: #262626;
+  font-weight: bold;
+  background: transparent;
+}
+.cta.blue {
+  background: #0095f6 !important;
+  color: #fff !important;
+}
+
+@media screen and (max-width: 820px) {
+  .login__img {
+    display: none;
+  }
+}

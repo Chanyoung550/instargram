@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+<mapper namespace="org.zerock.mapper.UserMapper">
+
+	<!-- <resultMap type="org.zerock.user.UserVO" id="UserResultMap">
+      <id property="userNo" column="userNo"/>
+      <result property="userID" column="userID"/>
+      <result property="userName" column="userName"/>
+      <result property="userPassword" column="userPassword"/>
+      <result property="userEmail" column="userEmail"/>
+      <result property="userPhone" column="userPhone"/>
+      <result property="regDate" column="regDate"/>
+      
+      <result property="profileName" column="profileName"/>
+      <result property="profileSize" column="profileSize"/>
+      <result property="profileContentType" column="profileContentType"/>
+      <result property="profileData" column="profileData"/>
+    </resultMap> -->
+   
+   
+   
+	<!-- 회원가입 -->
+ 	<insert id="register">
+		insert into instar_member(userID, userName, userPassword, userEmail) values(#{userID}, #{userName}, #{userPassword}, #{userEmail})
+	</insert>
+	
+	<!-- 아이디 중복확인 -->
+	<select id="idCheck" resultType="int">
+		select count(*) from instar_member where userID=#{userID}
+	</select>
+	
+	<!-- 회원정보 조회 -->
+	<select id="login" resultType="org.zerock.user.UserVO">
+		select * from instar_member where userID = #{userID}
+	</select>
+	
+</mapper>
