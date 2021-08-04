@@ -19,9 +19,24 @@
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
 		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="contentType" value="text/html; charset=UTF-8" ></beans:property>
+	</beans:bean>
+	
+	<!-- 업로드 패스 설정 --> 
+	<beans:bean class="java.lang.String" id="uploadPath">
+	 <beans:constructor-arg value="D:\Spring\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\wtpwebapps\InstaProject\resources"/>
+	</beans:bean>
+	
+	<!-- 일반 파일 업로드 경로 -->
+	<resources mapping="/imgUpload/**" location="/resources/imgUpload/" />
+	
+	<beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+	 <beans:property name="maxUploadSize" value="10485760"/>
 	</beans:bean>
 	
 	<context:component-scan base-package="org.zerock.controller" />
+	
+	
 	
 	
 	

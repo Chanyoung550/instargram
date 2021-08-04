@@ -16,7 +16,7 @@
 			<li><a href="#a">위치</a></li>
 		</ul>
 		<div class="copy">
-			<p>© 2020 Photogram from There Programing</p>
+			<p>© 20201 codechangram from There Programing</p>
 		</div>
 	</div>
 </footer>

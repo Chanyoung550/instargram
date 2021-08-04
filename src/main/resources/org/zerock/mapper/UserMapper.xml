@@ -4,36 +4,159 @@
    
 <mapper namespace="org.zerock.mapper.UserMapper">
 
-	<!-- <resultMap type="org.zerock.user.UserVO" id="UserResultMap">
-      <id property="userNo" column="userNo"/>
-      <result property="userID" column="userID"/>
-      <result property="userName" column="userName"/>
-      <result property="userPassword" column="userPassword"/>
-      <result property="userEmail" column="userEmail"/>
-      <result property="userPhone" column="userPhone"/>
-      <result property="regDate" column="regDate"/>
-      
-      <result property="profileName" column="profileName"/>
-      <result property="profileSize" column="profileSize"/>
-      <result property="profileContentType" column="profileContentType"/>
-      <result property="profileData" column="profileData"/>
-    </resultMap> -->
-   
-   
-   
 	<!-- 회원가입 -->
  	<insert id="register">
-		insert into instar_member(userID, userName, userPassword, userEmail) values(#{userID}, #{userName}, #{userPassword}, #{userEmail})
+		insert into user(user_id, user_name, user_pwd, user_email) values(#{user_id}, #{user_name}, #{user_pwd}, #{user_email})
 	</insert>
 	
 	<!-- 아이디 중복확인 -->
 	<select id="idCheck" resultType="int">
-		select count(*) from instar_member where userID=#{userID}
+		select count(*) from user where user_id=#{user_id}
 	</select>
 	
 	<!-- 회원정보 조회 -->
-	<select id="login" resultType="org.zerock.user.UserVO">
-		select * from instar_member where userID = #{userID}
+	<select id="login" resultType="org.zerock.instardto.UserVO">
+		select * from user where user_id = #{user_id}
 	</select>
-	
+	<!-- 게시물수 조회 -->
+	<select id="contentcnt" resultType="int">
+		select count(*) from photo where photo_id=#{user_id}
+	</select>
+	<!-- 팔로워수 조회 -->
+	<select id="followercnt" resultType="int">
+		select count(*) from follow where follower_user=#{user_id}
+	</select>
+	<!-- 팔로우수 조회 -->
+	<select id="followcnt" resultType="int">
+		select count(*) from follow where follow_user=#{user_id}
+	</select>
+	<!-- 업로드 -->
+	<insert id="upload">
+		insert into photo(photourl, photothumb, photo_content, photo_id, user_photourl, user_photothumb)
+		values(#{photoUrl}, #{photothumb}, #{photo_content}, #{photo_id}, #{user_photoUrl}, #{user_photothumb})
+	</insert>
+	<!-- 업로드된 사진 가져오기 -->
+	<select id="selectphoto" resultType="org.zerock.instardto.PhotoVO">
+		select * from photo where photo_id=#{user_id} order by pno desc
+	</select>
+<!--팔로우 되어있는지 확인
+	<select id="followCheck" resultType="org.zerock.instardto.FollowVO">
+		select * from follow where
+	</select> -->
+	<!-- 팔로우 하는 ajax -->
+	<insert id="insertfollow">
+		insert into follow (follow_user, follower_user)
+		values(#{follow_user}, #{follower_user})
+	</insert>
+	<!-- 프로필페이지에 유저아이디를 가져옴 -->
+	<select id="selectuser" resultType="org.zerock.instardto.UserVO">
+		select * from user where user_id=#{user_id}
+	</select>
+	<!-- 프로필 업데이트 -->
+	<update id="profileupload">
+		update user set user_photourl=#{user_photoUrl}, user_photothumb=#{user_photothumb}
+		where user_id = #{user_id}
+	</update>
+	<!-- 프로필 변경 후 게시글 올린 포토 테이블 유저사진 변경 -->
+	<update id="updateprofile">
+		update photo set user_photourl=#{user_photourl}, user_photothumb=#{user_photothumb}
+		where photo_id = #{userid}
+	</update>
+	<!-- 팔로우 리스트 가져오기 -->
+	<select id="followlist" resultType="org.zerock.instardto.FollowVO">
+		select * from follow where follow_user=#{user_id}
+	</select>
+	<!-- 팔로워 리스트 가져오기 -->
+	<select id="followerlist" resultType="org.zerock.instardto.FollowVO">
+		select * from follow where follower_user=#{user_id}
+	</select>
+	<!-- 메인페이지 팔로우된 리스트 가져오기 -->
+	<select id="mainlist" resultType="org.zerock.instardto.PhotoVO">
+  		select * 
+  		from photo
+		where photo_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item.follower_user}
+		</foreach>
+		order by pno desc
+	</select>
+	<!-- 메인페이지 팔로우된 리스트 카운트 -->
+	<select id="mainlistcnt" resultType="int">
+  		select count(*)
+  		from photo
+		where photo_id in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+			#{item.follower_user}
+		</foreach>
+	</select>
+	<!-- 좋아요 순으로 가져오기 -->
+	<select id="likelist" resultType="org.zerock.instardto.PhotoVO">
+		select * from photo order by photo_like desc, photo_date desc
+	</select>
+	<!-- 댓글 등록 -->
+	<insert id="commentwrite">
+		insert into comment (pno, comment_user, comment_content) 
+		values (#{pno}, #{comment_user}, #{comment_content})
+	</insert>
+	<!-- 댓글가져오기 -->
+	<select id="commentselect" resultType="org.zerock.instardto.CommentVO">
+		select *
+  		from comment
+		<if test="photo.size!=0">
+		where pno in
+		<foreach item="item" index="index" collection="photo" open="(" separator="," close=")">
+			#{item.pno}
+		</foreach>
+		</if>
+	</select>
+	<!-- 댓글 지우기 -->
+	<delete id="commentdelete">
+		delete from comment where cno=#{cno}
+	</delete>
+	<!-- 유저에 관련된 좋아요 리스트 가져오기 -->
+	<select id="likeselect" resultType="org.zerock.instardto.LikeVO">
+		select * 
+  		from likey
+		where like_user = #{userid} 
+		<if test="photo.size!=0">
+		and pno in
+		<foreach item="item" index="index" collection="photo" open="(" separator="," close=")">
+			#{item.pno}
+		</foreach>
+		</if>
+	</select>
+	<!-- 팔로우가 되어있는지 체크 -->
+	<select id="followcheck" resultType="int">
+		select count(*) from follow 
+		where follow_user = #{follow_user} and follower_user = #{user_id}
+	</select>
+	<!-- 팔로우 하기 -->
+	<insert id="followupdate">
+		insert into follow (follow_user, follower_user) 
+		values (#{follow_user}, #{follower_user})
+	</insert>
+	<!-- 팔로우 취소 -->
+	<delete id="followDelete">
+		delete from follow 
+		where follow_user = #{follow_user} and follower_user = #{follower_user}
+	</delete>
+	<!-- 좋아요 누르면 업데이트 -->
+	<insert id="likeupdate">
+		insert into likey (like_user, pno)
+		values (#{like_user}, #{pno})
+	</insert>
+	<!-- 좋아요 누적수 +1 -->
+	<update id="likecntupdate">
+		update photo set photo_like=photo_like+1
+		where pno=#{pno}
+	</update>
+		<!-- 좋아요 삭제하면 업데이트 -->
+	<delete id="likedelete">
+		delete from likey where like_user = #{like_user} and pno = #{pno}
+	</delete>
+	<!-- 좋아요 누적수 -1 -->
+	<update id="likecntdelete">
+		update photo set photo_like=photo_like-1
+		where pno=#{pno}
+	</update>
 </mapper>

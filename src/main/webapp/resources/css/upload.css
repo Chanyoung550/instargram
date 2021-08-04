@@ -21,13 +21,12 @@ button {
   cursor: pointer;
 }
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 935px;
-  margin: 0 auto;
-  height: 100%;
-  padding: 0 30px;
+   display: flex;
+   align-items: center;
+   width: 935px;
+   margin: 0 auto;
+   height: 100%;
+   padding: 0 30px;
 }
 main {
   background: #fff;

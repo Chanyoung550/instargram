@@ -7,14 +7,12 @@
 
 		<!--인기게시글 갤러리(GRID배치)-->
 		<div class="popular-gallery">
-			<c:forEach var="image" items="${images}">
+			<c:forEach var="photo" items="${photo}">
 				<div class="p-img-box">
-					<a href="/user/${image.user.id}"> <img src="/upload/${image.postImageUrl}" alt="">
+					<a href="/user/profile?user_id=${photo.photo_id}&follow_user=${login.user_id}"> <img src="${photo.photothumb}" alt=""><!-- 인기 게시글의 사진 출력 및 사진을 올린사람의 프로필로 이동하는 a태그 -->
 					</a>
 				</div>
 			</c:forEach>
-
-
 		</div>
 	</div>
 </main>

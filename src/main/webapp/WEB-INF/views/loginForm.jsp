@@ -25,7 +25,7 @@
                 <article class="login__form__container">
                    <!--로그인 폼-->
                    <div class="login__form">
-                        <h1><img src="${pageContext.request.contextPath}/resources/images/daseulgram.png" alt=""></h1>
+                        <h1><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt=""></h1>
                         
                         <!--로그인 인풋-->
                         <form class="login__input" action="/login" method="post" id="loginFrm" name="loginFrm">
@@ -34,27 +34,6 @@
                             <input type="button" id="loginBtn" value="로그인" >
                         </form>
                         <!--로그인 인풋end-->
-                        
-                        <!-- 또는 -->
-                        <div class="login__horizon">
-                            <div class="br"></div>
-                            <div class="or">또는</div>
-                            <div class="br"></div>
-                        </div>
-                        <!-- 또는end -->
-                        
-                        <!-- Oauth 소셜로그인 -->
-                        <div class="login__facebook">
-                        <a href="/oauth2/authorization/facebook">
-                            <button>
-                                <i class="fab fa-facebook-square"></i>
-                             	<!-- git test -->
-                                <span>Facebook으로 로그인</span>
-                                
-                            </button>
-                         </a>
-                        </div>
-                        <!-- Oauth 소셜로그인end -->
                     </div>
                     
                     <!--계정이 없으신가요?-->
@@ -70,84 +49,73 @@
         
     </div>
 </body>
-
 <script>
 	$(function() {
-		
+
 		let chk1 = false;
 		let chk2 = false;
-		$('#login_id').on('keyup', function(){
-		    if($('#login_id').val() === "") {
-		        chk1 = false;
-		    } else {
-		        chk1 = true;
-		    }
+		$('#login_id').on('keyup', function() {
+			if ($('#login_id').val() === "") {
+				chk1 = false;
+			} else {
+				chk1 = true;
+			}
 		});
-		$('#login_pw').on('keyup', function(){
-		    if($('#login_pw').val() === "") {
-		        chk2 = false;
-		    } else {
-		        chk2 = true;
-		    }
+		$('#login_pw').on('keyup', function() {
+			if ($('#login_pw').val() === "") {
+				chk2 = false;
+			} else {
+				chk2 = true;
+			}
 		});
-	
-		$('#loginBtn').click(function(e) {
-			
+
+		$('#loginBtn').click(function(e) {//#loginBtn 클릭시 실행.
+
 			console.log("check 통과 - true");
-			
-			if(chk1 && chk2) {
-				
+
+			if (chk1 && chk2) {//아이디, 비밀번호가 입력되어 있으면 실행.
+
 				console.log("if 진입");
-				
-				const userID = $('#login_id').val();
-				const userPassword = $('#login_pw').val();
-				
-				//콘솔에 값 출력
-				console.log("userID: " + userID);
-				console.log("userPassword: " + userPassword);
-				
-				//json객체에 담기
-				const userInfo = {
-					userID: userID,
-					userPassword: userPassword
+
+				const user_id = $('#login_id').val();//아이디 텍스트창에 value값을 변수에 저장.
+				const user_pwd = $('#login_pw').val();//비밀번호 텍스트창에 value값을 변수에 저장.
+
+				const userInfo = {//json객체에 담기.
+					user_id : user_id,//변수에 저장된 유저아이디.
+					user_pwd : user_pwd//변수에 저장된 패스워드.
 				};
-				
+
 				$.ajax({
-					type: "POST",
-					url: "/loginCheck",
-					headers: {
-						"Content-Type": "application/json",
-		                "X-HTTP-Method-Override": "POST"
+					type : "POST",//post방식으로 전달.
+					url : "/loginCheck",
+					headers : {
+						"Content-Type" : "application/json",
+						"X-HTTP-Method-Override" : "POST"
 					},
-					data: JSON.stringify(userInfo),
-					dataType: "text",
-					success: function(result) {
-						//console.log("data: " + data);
-						//console.log("result:" + result);
-						
-						const resultSet = $.trim(result);
+					data : JSON.stringify(userInfo),//json.stringfy타입으로 userInfo에 저장된 값을 전달.
+					dataType : "text",//반환되는 타입은 text
+					success : function(result) {//ajax가 성공하면 실행.
+						console.log(result);
+						const resultSet = $.trim(result);//전달된 result값의 띄어쓰기 없애기
 						console.log("resultSet:" + resultSet);
-						
-						if(resultSet === "idFail") {
+
+						if (resultSet === "idFail") {//result값이 idFail이면 실행
 							$('#login_id').focus();
-							$('#alert_msg').html('<p>ID 확인이 필요합니다.</p>');
-							
-						} else if(resultSet === "pwFail") {
-							$('#login_pw').focus();
-							$('#alert_msg').html('<p>PW 확인이 필요합니다.</p>');
-							
-						} else if(resultSet === "loginSuccess") {
-							$('#loginFrm').submit();
+							alert('아이디/패스워드가 틀렸습니다.')//alert실행.
+
+						} else if (resultSet === "loginSuccess") {//result값이 loginSuccess면 실행.
+							$('#loginFrm').submit();//form 태그 실행.
 						}
 					}
-					
+
 				});
-				
-			} else {
+
+			} else {//아이디, 비밀번호가 입력되어있지 않으면 실행.
 				alert('입력 정보를 다시 확인하세요');
 			}
 		});
 	});
 </script>
+	
 
 </html>
